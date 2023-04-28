@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <title>CURD APP</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">Login</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Outlet</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Games</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Tournament</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link disabled">Disabled</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+    </header>
+    <main>
+        <div class="container mt-5 col-6" >
+        <div class="input-group mb-3">
+            <input type="text" class="form-control " placeholder="Add Players" aria-label="Recipient's username" aria-describedby="button-addon2">
+            <button id="add_btn" class="btn btn-success" type="button" id="button-addon2">ADD</button>
+          </div>
+        
+        <ul id="parentList" class="list-group">
+            <li class="list-group-item d-flex justify-content-between">
+                <h3 class="flex-grow-1">Chang Long</h3>
+                <button class="btn btn-warning mx-3 " onclick="editPlayer(this)">Edit</button>
+                <button class="btn btn-danger" onclick="removePlayer(this)">Remove</button>
+            </li>
+            
+          </ul>
+        </div>
+    </main>
+    <script>
+        let addBtn=document.getElementById('add_btn')
+        addBtn.addEventListener('click',addPlayer)
+        let parentList=document.getElementById('parentList')
+
+
+        function addPlayer(e){
+            if(parentList.children[0].className =='emptyMsg'){
+                parentList.children[0].remove()
+            }
+            let currentBtn=e.currentTarget;
+            let currentInput=currentBtn.previousElementSibling
+            let currentPlayer=currentInput.value
+
+            let newLi=document.createElement('li')
+
+            newLi.className="list-group-item d-flex justify-content-between"
+            newLi.innerHTML=` <h3 class="flex-grow-1">${currentPlayer}</h3>
+                <button class="btn btn-warning mx-3" onclick="editPlayer(this)">Edit</button>
+                <button class="btn btn-danger"  onclick="removePlayer(this)" >Remove</button>`
+            
+            
+            parentList.appendChild(newLi)
+        }
+        function removePlayer(currElement){
+            currElement.parentElement.remove()
+            let parentList=document.getElementById('parentList')
+            if(parentList.children.length<=0){
+                let newEmptyMsg=document.createElement('h3')
+                newEmptyMsg.classList.add("emptyMsg")
+                newEmptyMsg.textContent="List is empty Please add player!!!"
+                parentList.appendChild(newEmptyMsg)
+            }
+        }
+
+        function editPlayer(currElement){
+            if(currElement.textContent=="Done"){
+              currElement.className="btn btn-warning mx-3"
+                currElement.textContent="Edit"
+                let currentPlayer=currElement.previousElementSibling.value
+                let currHeading=document.createElement("h3")
+                currHeading.className="flex-grow-1"
+                currHeading.textContent=currentPlayer
+                currElement.parentElement.replaceChild(currHeading,currElement.previousElementSibling)
+
+            }else{
+            currElement.textContent="Done"
+            currElement.className="btn btn-primary mx-3"
+            let currentPlayer=currElement.previousElementSibling.textContent
+            let currInput=document.createElement("input")
+            currInput.type="text"
+            currInput.placeholder="Player Name"
+            currInput.className="form-control"
+            currInput.value=currentPlayer;
+            currElement.parentElement.replaceChild(currInput,currElement.previousElementSibling)
+            }
+
+        }
+    </script>
+</body>
+</html>
